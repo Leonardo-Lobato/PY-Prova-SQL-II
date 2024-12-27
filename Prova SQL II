@@ -1,0 +1,30 @@
+import sqlite3
+conexao = sqlite3.connect('banco_pessoal.db')
+execucao = conexao.cursor()
+
+execucao.execute('''
+CREATE TABLE IF NOT EXISTS dados (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome_completo TEXT NOT NULL,
+    idade INTEGER NOT NULL,
+    genero TEXT NOT NULL,
+    nacionalidade TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    estado_civil TEXT NOT NULL,
+    nome_pai TEXT NOT NULL,
+    nome_mae TEXT NOT NULL
+);
+''')
+execucao.executemany('''
+INSERT INTO dados (nome_completo, idade, genero, nacionalidade, email, estado_civil, nome_pai, nome_mae) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+''', [
+    ('Anna Martins', 23, 'Feminino', 'Brasileira', 'ana.martins@gmail.com', 'Solteiro(a)', 'Paulo Martins', 'Anna Martins'),
+    ('Jair Bolsonaro', 22, 'Masculino', 'Brasileiro', 'bolso.pistola@gmail.com', 'Casado(a)', 'joão Bolsonaro', 'Maria Bolsonaro'),
+    ('Luiz Inácio Lula', 13, 'Masculino', 'Brasileiro', 'lula.cachaca@gmail.com', 'Divorciado(a)', 'José Silva', 'Paula Silva')
+])
+
+conexao.commit()
+conexao.close()
+
+print("Banco criado e atualizado!")
